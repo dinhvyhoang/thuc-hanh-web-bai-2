@@ -1,0 +1,158 @@
+﻿@model webbaniphone.Models.Product
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<style>
+    .details-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 40px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.02);
+    }
+
+    .brand-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #888;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .product-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        color: #000;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: #333;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .section-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .product-description {
+        line-height: 1.8;
+        color: #555;
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+
+    /* Gallery ảnh */
+    .main-img-wrapper {
+        text-align: center;
+        margin-bottom: 30px;
+        border: 1px solid #f5f5f5;
+        padding: 20px;
+    }
+
+    .main-img {
+        max-width: 100%;
+        height: auto;
+        transition: transform 0.5s ease;
+    }
+
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .grid-item {
+        border: 1px solid #eee;
+        padding: 10px;
+        transition: 0.3s;
+    }
+
+        .grid-item:hover {
+            border-color: #000;
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+    .btn-action-group {
+        margin-top: 50px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn-dark-outline {
+        border: 1px solid #000;
+        background: transparent;
+        color: #000;
+        padding: 12px 30px;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+        .btn-dark-outline:hover {
+            background: #000;
+            color: #fff;
+        }
+</style>
+
+<div class="details-container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="main-img-wrapper">
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="main-img" />
+            </div>
+
+            @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+            {
+                <span class="section-title">Gallery</span>
+                <div class="image-grid">
+                    @foreach (var imageUrl in Model.ImageUrls)
+                    {
+                        <div class="grid-item">
+                            <img src="@imageUrl" alt="Gallery Image" />
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div class="col-md-6">
+            <span class="brand-label">iPhone Collection</span>
+            <h1 class="product-title">@Model.Name</h1>
+            <div class="product-price">@Model.Price.ToString("N0") <small>VNĐ</small></div>
+
+            <span class="section-title">Description</span>
+            <p class="product-description">
+                @Model.Description
+            </p>
+
+            <div class="btn-action-group">
+                <a asp-action="Update" asp-route-id="@Model.Id" class="btn-dark-outline">Edit Product</a>
+                <a asp-action="Index" class="btn-dark-outline" style="border-color: #ccc; color: #666;">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>S

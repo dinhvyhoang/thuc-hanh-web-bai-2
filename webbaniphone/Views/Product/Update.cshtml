@@ -1,0 +1,112 @@
+﻿@model webbaniphone.Models.Product
+@{
+    ViewData["Title"] = "Update Product";
+}
+
+<style>
+    .update-card {
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 30px;
+        border: 1px solid #000;
+        background-color: #fff;
+    }
+
+    .update-title {
+        text-align: center;
+        font-weight: 800;
+        text-transform: uppercase;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    .form-control {
+        border-radius: 0;
+        border: 1px solid #ccc;
+    }
+
+    .img-preview {
+        width: 100px;
+        height: auto;
+        border: 1px solid #eee;
+        margin-top: 5px;
+    }
+
+    .btn-update {
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 0;
+        padding: 12px;
+        width: 100%;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .btn-update:hover {
+            background: #333;
+        }
+</style>
+
+<div class="update-card">
+    <h2 class="update-title">Edit Product</h2>
+
+    <form asp-action="Update" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="All" class="text-danger small"></div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label"></label>
+                    <input asp-for="Price" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label">Category</label>
+            <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control"></select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Main Image</label>
+            <input type="file" name="imageUrl" class="form-control" />
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mt-2">
+                    <small>Current Image:</small><br />
+                    <img src="@Model.ImageUrl" class="img-preview" />
+                </div>
+            }
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Update Gallery</label>
+            <input type="file" name="imageUrls" class="form-control" multiple />
+        </div>
+
+        <button type="submit" class="btn-update">SAVE CHANGES</button>
+        <div class="text-center mt-3">
+            <a asp-action="Index" style="color: #000; font-size: 0.9rem;">Cancel and go back</a>
+        </div>
+    </form>
+</div>

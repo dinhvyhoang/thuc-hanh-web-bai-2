@@ -1,0 +1,83 @@
+﻿@model webbaniphone.Models.Product
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+<style>
+    .delete-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 40px;
+        border: 1px solid #000; /* Khung đen mảnh */
+        background: #fff;
+        text-align: center;
+    }
+
+    .product-info {
+        margin: 25px 0;
+        text-align: left;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        padding: 20px 0;
+    }
+
+    .info-label {
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .btn-delete-confirm {
+        background: #000;
+        color: #fff;
+        border: none;
+        padding: 12px 30px;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        width: 100%;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .btn-delete-confirm:hover {
+            background: #d9534f;
+        }
+    /* Chuyển đỏ khi hover */
+    .btn-cancel {
+        display: inline-block;
+        margin-top: 15px;
+        color: #000;
+        text-decoration: underline;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="delete-container">
+    <h2 style="font-weight: 900; letter-spacing: -1px;">CONFIRM DELETE</h2>
+    <p>Hành động này không thể hoàn tác.</p>
+
+    <div class="product-info">
+        <div class="info-label">Sản phẩm</div>
+        <div class="info-value">@Model.Name</div>
+
+        <div class="info-label">Giá tiền</div>
+        <div class="info-value">@Model.Price.ToString("N0") VNĐ</div>
+
+        <div class="info-label">Mô tả</div>
+        <div class="info-value">@Model.Description</div>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn-delete-confirm">XÁC NHẬN XOÁ</button>
+    </form>
+
+    <a asp-action="Index" class="btn-cancel">Quay lại danh sách</a>
+</div>
