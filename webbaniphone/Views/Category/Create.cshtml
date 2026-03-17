@@ -1,0 +1,23 @@
+﻿@model webbaniphone.Models.Category
+
+<div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-sm border-0 bg-light">
+        <div class="card-body p-4">
+            <h3 class="mb-4 text-center" style="font-weight:900;">THÊM DANH MỤC</h3>
+            <form asp-action="Create" method="post">
+                @* Chỉ giữ lại ô nhập Tên, bỏ hoàn toàn ô nhập ID *@
+                <div class="mb-4">
+                    <label class="form-label font-weight-bold">Tên danh mục</label>
+                    <input asp-for="Name" class="form-control form-control-lg" placeholder="Ví dụ: iPhone 16 Series" />
+                    @* Hiển thị lỗi "Tên danh mục không được để trống" từ Model *@
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-dark btn-lg">XÁC NHẬN LƯU</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Quay lại danh sách</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

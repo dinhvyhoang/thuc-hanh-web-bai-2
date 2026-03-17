@@ -1,105 +1,122 @@
 ﻿@model webbaniphone.Models.Product
-@using Microsoft.AspNetCore.Mvc.Rendering
+
 @{
-    ViewData["Title"] = "Add Product";
+    ViewData["Title"] = "Thêm Sản Phẩm Mới";
 }
 
 <style>
-    /* Thiết kế đóng khung nhẹ nhàng tone Trắng - Đen */
-    .add-product-card {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 2rem;
-        border: 1px solid #e0e0e0; /* Viền mảnh */
-        border-radius: 4px;
-        background-color: #fff;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .form-title {
-        text-align: center;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #000;
-        padding-bottom: 0.5rem;
-    }
-
-    .form-group {
-        margin-bottom: 1rem;
-    }
-
-        .form-group label {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-    .form-control {
-        border-radius: 0;
-        border: 1px solid #ccc;
-    }
-
-        .form-control:focus {
-            border-color: #000;
-            box-shadow: none;
-        }
-
-    .btn-add {
-        background: #000;
-        color: #fff;
-        border: none;
-        border-radius: 0;
+    /* CSS để xử lý lỗi tràn giao diện khi chọn ảnh */
+    .custom-file {
+        position: relative;
+        display: flex; /* Dùng flex để các phần tử con nằm ngang */
         width: 100%;
-        padding: 0.75rem;
-        transition: 0.3s;
+        height: calc(1.5em + .75rem + 2px);
+        overflow: hidden; /* CỰC KỲ QUAN TRỌNG: Ẩn phần thừa ra ngoài */
     }
 
-        .btn-add:hover {
-            background: #333;
+    .custom-file-input {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        margin: 0;
+        opacity: 0; /* Ẩn nút chọn file mặc định */
+    }
+
+    .custom-file-label {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem .75rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        /* CSS để xử lý văn bản (tên file ảnh) */
+        overflow: hidden; /* Ẩn văn bản thừa */
+        text-overflow: ellipsis; /* Hiển thị dấu "..." khi văn bản bị ẩn */
+        white-space: nowrap; /* Không cho văn bản xuống dòng */
+        max-width: 100%; /* Giới hạn độ rộng tối đa */
+    }
+
+        .custom-file-label::after {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3;
+            display: block;
+            height: calc(1.5em + .75rem);
+            padding: .375rem .75rem;
+            line-height: 1.5;
+            color: #495057;
+            content: "Chọn ảnh"; /* Văn bản trên nút */
+            background-color: #e9ecef;
+            border-left: inherit;
+            border-radius: 0 .25rem .25rem 0;
         }
 </style>
 
-<div class="add-product-card">
-    <h1 class="form-title">Add Product</h1>
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 bg-light">
+        <div class="card-body p-4">
+            <h3 class="mb-4 text-center" style="font-weight:900;">THÊM SẢN PHẨM MỚI</h3>
+            <form asp-action="Add" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <form asp-action="Add" method="post" enctype="multipart/form-data">
-        <div asp-validation-summary="All" class="text-danger small"></div>
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label font-weight-bold"></label>
+                    <input asp-for="Name" class="form-control" placeholder="Ví dụ: iPhone 16 Pro Max" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
 
-        <div class="form-group">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger small"></span>
+                <div class="mb-3">
+                    <label asp-for="Price" class="form-label font-weight-bold"></label>
+                    <input asp-for="Price" class="form-control" type="number" step="1000" placeholder="Ví dụ: 30990000" />
+                    <span asp-validation-for="Price" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CategoryId" class="form-label font-weight-bold">Danh mục</label>
+                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
+                        <option value="">-- Chọn danh mục --</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                </div>
+
+                @* Phần thêm ảnh được sửa lỗi tràn giao diện *@
+                <div class="mb-4">
+                    <label asp-for="ImageUrl" class="form-label font-weight-bold">Ảnh sản phẩm</label>
+                    <div class="custom-file">
+                        <input type="file" name="ImageFile" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Chọn file ảnh...</label>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-dark btn-lg">XÁC NHẬN LƯU</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">Quay lại danh sách</a>
+                </div>
+            </form>
         </div>
-
-        <div class="form-group">
-            <label asp-for="Price"></label>
-            <input asp-for="Price" class="form-control" />
-            <span asp-validation-for="Price" class="text-danger small"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Description"></label>
-            @* Đã sửa lỗi viết dính 'formcontrol' *@
-            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-            <span asp-validation-for="Description" class="text-danger small"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="CategoryId">Category</label>
-            <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-control"></select>
-        </div>
-
-        @* PHẦN QUAN TRỌNG: Sửa để khớp với Controller *@
-        <div class="form-group">
-            <label>Main Image (Ảnh đại diện)</label>
-            <input type="file" name="imageUrl" class="form-control" accept="image/*" />
-        </div>
-
-        <div class="form-group">
-            <label>Gallery Images (Nhiều ảnh)</label>
-            <input type="file" name="imageUrls" class="form-control" multiple accept="image/*" />
-        </div>
-
-        <button type="submit" class="btn btn-add mt-3">ADD PRODUCT</button>
-    </form>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // JavaScript để cập nhật tên file ảnh lên nhãn sau khi chọn
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+}

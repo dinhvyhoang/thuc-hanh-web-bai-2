@@ -1,50 +1,46 @@
 ﻿using webbaniphone.Models;
+using webbaniphone.Repositories;
 
 namespace webbaniphone.Repositories
 {
     public class MockProductRepository : IProductRepository
     {
-        private readonly List<Product> _products;
-        public MockProductRepository()
+        // Thêm static để dữ liệu không bị reset khi chuyển trang
+        private static List<Product> _products = new List<Product>
         {
-            // Tạo một số dữ liệu mẫu
-            _products = new List<Product>
- {
- new Product { Id = 1, Name = "Laptop", Price = 1000,
-Description = "A high-end laptop"},
- // Thêm các sản phẩm khác
- };
+            new Product { Id = 1, Name = "iPhone 15 Pro", Price = 25000000, Description = "Apple Intelligence", CategoryId = 1, ImageUrl = "/images/iphone15.jpg" }
+        };
+
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await Task.FromResult(_products);
         }
-        public IEnumerable<Product> GetAll()
+
+        public async Task<Product> GetByIdAsync(int id)
         {
-            return _products;
+            return await Task.FromResult(_products.FirstOrDefault(p => p.Id == id));
         }
-        public Product GetById(int id)
+
+        public async Task AddAsync(Product product)
         {
-            return _products.FirstOrDefault(p => p.Id == id);
-        }
-        public void Add(Product product)
-        {
+            // Tự động tăng ID nếu bạn chưa có DB thực
             product.Id = _products.Max(p => p.Id) + 1;
             _products.Add(product);
+            await Task.CompletedTask;
         }
-        public void Update(Product product)
+
+        public async Task UpdateAsync(Product product)
         {
             var index = _products.FindIndex(p => p.Id == product.Id);
-            if (index != -1)
-            {
-                _products[index] = product;
-            }
+            if (index != -1) _products[index] = product;
+            await Task.CompletedTask;
         }
-        public void Delete(int id)
+
+        public async Task DeleteAsync(int id)
         {
             var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product != null)
-            {
-                _products.Remove(product);
-            }
+            if (product != null) _products.Remove(product);
+            await Task.CompletedTask;
         }
-
-
     }
 }

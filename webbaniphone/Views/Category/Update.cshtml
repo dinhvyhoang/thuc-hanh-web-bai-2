@@ -1,0 +1,17 @@
+﻿@model webbaniphone.Models.Category
+
+<div class="container mt-5" style="max-width: 500px;">
+    <h3 class="mb-4">CẬP NHẬT DANH MỤC</h3>
+    <form asp-action="Update" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label class="form-label font-weight-bold">Tên danh mục mới</label>
+            <input asp-for="Name" class="form-control" required />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">XÁC NHẬN CẬP NHẬT</button>
+        <a asp-action="Index" class="btn btn-light">Hủy</a>
+    </form>
+</div>

@@ -1,83 +1,20 @@
 ﻿@model webbaniphone.Models.Product
 @{
-    ViewData["Title"] = "Delete Product";
+    ViewData["Title"] = "Confirm Removal";
 }
 
-<style>
-    .delete-container {
-        max-width: 500px;
-        margin: 50px auto;
-        padding: 40px;
-        border: 1px solid #000; /* Khung đen mảnh */
-        background: #fff;
-        text-align: center;
-    }
-
-    .product-info {
-        margin: 25px 0;
-        text-align: left;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-        padding: 20px 0;
-    }
-
-    .info-label {
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        color: #666;
-    }
-
-    .info-value {
-        font-size: 1.1rem;
-        margin-bottom: 10px;
-    }
-
-    .btn-delete-confirm {
-        background: #000;
-        color: #fff;
-        border: none;
-        padding: 12px 30px;
-        text-transform: uppercase;
-        font-weight: bold;
-        letter-spacing: 1px;
-        width: 100%;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-        .btn-delete-confirm:hover {
-            background: #d9534f;
-        }
-    /* Chuyển đỏ khi hover */
-    .btn-cancel {
-        display: inline-block;
-        margin-top: 15px;
-        color: #000;
-        text-decoration: underline;
-        font-size: 0.9rem;
-    }
-</style>
-
-<div class="delete-container">
-    <h2 style="font-weight: 900; letter-spacing: -1px;">CONFIRM DELETE</h2>
-    <p>Hành động này không thể hoàn tác.</p>
-
-    <div class="product-info">
-        <div class="info-label">Sản phẩm</div>
-        <div class="info-value">@Model.Name</div>
-
-        <div class="info-label">Giá tiền</div>
-        <div class="info-value">@Model.Price.ToString("N0") VNĐ</div>
-
-        <div class="info-label">Mô tả</div>
-        <div class="info-value">@Model.Description</div>
+<div style="max-width: 500px; margin: 100px auto; text-align: center; border: 4px solid #000; padding: 50px;">
+    <h1 style="font-weight: 900; text-transform: uppercase;">Remove?</h1>
+    <p style="color: #666; margin-bottom: 30px;">Bạn có chắc muốn xóa <b>@Model.Name</b> khỏi hệ thống?</p>
+    
+    <div style="background: #f9f9f9; padding: 20px; margin-bottom: 30px;">
+        <img src="@Model.ImageUrl" style="width: 100px; height: 100px; object-fit: contain;" />
     </div>
 
     <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn-delete-confirm">XÁC NHẬN XOÁ</button>
+        <button type="submit" style="background: #000; color: #fff; border: none; padding: 15px 40px; font-weight: 700; text-transform: uppercase; width: 100%; cursor: pointer;">Delete Permanently</button>
     </form>
-
-    <a asp-action="Index" class="btn-cancel">Quay lại danh sách</a>
+    
+    <a asp-action="Index" style="display: block; margin-top: 20px; color: #999; text-decoration: none; font-size: 0.8rem; text-transform: uppercase;">Cancel Action</a>
 </div>
