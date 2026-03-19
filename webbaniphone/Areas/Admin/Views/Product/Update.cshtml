@@ -1,6 +1,9 @@
-﻿@model webbaniphone.Models.Product
+﻿@using webbaniphone.Models
+@model webbaniphone.Models.Product
+
 @{
-    ViewData["Title"] = "Update Product";
+    ViewData["Title"] = "Cập nhật sản phẩm";
+    var categoryList = ViewBag.CategoryList as List<Category>;
 }
 
 <style>
@@ -25,7 +28,6 @@
             letter-spacing: -1px;
         }
 
-    /* Grid layout cho Form */
     .form-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -53,16 +55,15 @@
         width: 100%;
         border: 1px solid #ccc;
         padding: 12px;
-        border-radius: 0;
         outline: none;
         transition: 0.3s;
+        border-radius: 10px;
     }
 
         .input-control:focus {
             border-color: #000;
         }
 
-    /* Preview ảnh hiện tại */
     .current-media {
         display: flex;
         gap: 15px;
@@ -70,6 +71,8 @@
         background: #f9f9f9;
         padding: 10px;
         border: 1px solid #eee;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
     .preview-thumb {
@@ -85,6 +88,7 @@
         padding: 15px;
         text-align: center;
         margin-top: 5px;
+        border-radius: 10px;
     }
 
     .btn-save {
@@ -99,6 +103,7 @@
         margin-top: 30px;
         cursor: pointer;
         transition: 0.3s;
+        border-radius: 12px;
     }
 
         .btn-save:hover {
@@ -123,53 +128,76 @@
 
 <div class="update-wrapper">
     <div class="update-header">
-        <h2>Update Information</h2>
+        <h2>Cập nhật sản phẩm</h2>
     </div>
 
     <form asp-action="Update" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="All" class="text-danger small mb-3"></div>
 
         <div class="form-grid">
             <div class="field-group">
-                <label class="field-label" asp-for="Name">Product Name</label>
+                <label class="field-label" asp-for="Name">Tên sản phẩm</label>
                 <input asp-for="Name" class="input-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
 
             <div class="field-group">
-                <label class="field-label" asp-for="Price">Price (VNĐ)</label>
+                <label class="field-label" asp-for="Price">Giá (VNĐ)</label>
                 <input asp-for="Price" class="input-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
             <div class="field-group full-width">
-                <label class="field-label" asp-for="CategoryId">Category Selection</label>
-                <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="input-control"></select>
+                <label class="field-label" asp-for="CategoryId">Danh mục</label>
+                <select asp-for="CategoryId" class="input-control">
+                    <option value="">-- Chọn danh mục --</option>
+                    @if (categoryList != null)
+                    {
+                        foreach (var item in categoryList)
+                        {
+                            if (Model.CategoryId == item.Id)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
 
             <div class="field-group full-width">
-                <label class="field-label" asp-for="Description">Specifications & Description</label>
+                <label class="field-label" asp-for="Description">Mô tả</label>
                 <textarea asp-for="Description" class="input-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
             <div class="field-group">
-                <label class="field-label">Main Display Image</label>
+                <label class="field-label">Ảnh chính</label>
                 <div class="upload-box">
                     <input type="file" name="imageUrl" accept="image/*" />
                 </div>
+
                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
                 {
                     <div class="current-media">
                         <img src="@Model.ImageUrl" class="preview-thumb" />
-                        <span style="font-size: 0.7rem; color: #888;">Current Active Image</span>
+                        <span style="font-size: 0.7rem; color: #888;">Ảnh hiện tại</span>
                     </div>
                 }
             </div>
 
             <div class="field-group">
-                <label class="field-label">Gallery Album</label>
+                <label class="field-label">Ảnh phụ</label>
                 <div class="upload-box">
-                    <input type="file" name="imageUrls" multiple accept="image/*" />
+                    <input type="file" name="images" multiple accept="image/*" />
                 </div>
+
                 @if (Model.ImageUrls != null && Model.ImageUrls.Any())
                 {
                     <div class="current-media" style="overflow-x: auto;">
@@ -182,7 +210,11 @@
             </div>
         </div>
 
-        <button type="submit" class="btn-save">Update Inventory</button>
-        <a asp-action="Index" class="back-link">Cancel and return to store</a>
+        <button type="submit" class="btn-save">Cập nhật</button>
+        <a asp-action="Index" class="back-link">Quay lại danh sách</a>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace webbaniphone.Areas.Admin.Views
+namespace webbaniphone.Areas.Admin.Views.Product
 {
-    public class IndexModel : PageModel
+    public class DeleteModel : PageModel
     {
         public void OnGet()
         {

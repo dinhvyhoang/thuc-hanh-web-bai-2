@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace webbaniphone.Areas.Admin.Views
 {
-    public class DeleteModel : PageModel
+    public class _ViewStartModel : PageModel
     {
         public void OnGet()
         {

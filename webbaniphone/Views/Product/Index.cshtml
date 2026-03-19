@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<webbaniphone.Models.Product>
 @{
-    ViewData["Title"] = "Storefront";
+    ViewData["Title"] = "Sản phẩm";
 }
 
 <style>
@@ -8,39 +8,28 @@
     .store-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; border-bottom: 1px solid #000; padding-bottom: 20px; }
     .store-header h2 { font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin: 0; }
 
-    /* Grid System */
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
     .product-card { border: 1px solid #f0f0f0; background: #fff; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; display: flex; flex-direction: column; }
     .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: #000; }
 
-    /* Image Wrapper */
     .image-wrapper { position: relative; padding-top: 100%; background: #f9f9f9; }
     .image-wrapper img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: 20px; }
 
-    /* Content Area */
     .product-info { padding: 20px; text-align: center; flex-grow: 1; }
     .category-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 1px; margin-bottom: 5px; display: block; }
     .product-name { font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 10px; display: block; text-decoration: none; }
     .product-price { font-size: 1.2rem; font-weight: 400; color: #333; }
 
-    /* Overlay Actions */
     .card-actions { display: flex; border-top: 1px solid #f0f0f0; }
     .card-actions a { flex: 1; padding: 12px 0; text-align: center; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; text-decoration: none; color: #000; transition: 0.3s; }
     .card-actions a:hover { background: #000; color: #fff; }
-    .card-actions a.btn-delete { color: #d9534f; }
-    .card-actions a.btn-delete:hover { background: #d9534f; color: #fff; }
 
-    .btn-add-main { background: #000; color: #fff; padding: 10px 25px; text-transform: uppercase; font-weight: 700; font-size: 0.8rem; text-decoration: none; transition: 0.3s; }
-    .btn-add-main:hover { background: #333; color: #fff; }
-    
-    /* Hiệu ứng khi không có ảnh */
     .no-image { display: flex; align-items: center; justify-content: center; height: 100%; color: #ccc; font-style: italic; font-size: 0.8rem; }
 </style>
 
 <div class="store-container">
     <div class="store-header">
-        <h2>Collection</h2>
-        <a asp-action="Add" class="btn-add-main">+ New Item</a>
+        <h2>Sản phẩm</h2>
     </div>
 
     <div class="product-grid">
@@ -59,18 +48,15 @@
                             <div class="no-image">No Image Available</div>
                         }
                     </div>
-                    
+
                     <div class="product-info">
-                        @* Hiển thị tên Category thật từ Database *@
                         <span class="category-badge">@(product.Category?.Name ?? "General")</span>
                         <a asp-action="Display" asp-route-id="@product.Id" class="product-name">@product.Name</a>
                         <div class="product-price">@product.Price.ToString("N0") <small>VNĐ</small></div>
                     </div>
 
                     <div class="card-actions">
-                        <a asp-action="Display" asp-route-id="@product.Id">View</a>
-                        <a asp-action="Update" asp-route-id="@product.Id">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@product.Id" class="btn-delete">Delete</a>
+                        <a asp-action="Display" asp-route-id="@product.Id">Xem chi tiết</a>
                     </div>
                 </div>
             }
@@ -78,7 +64,7 @@
         else
         {
             <div class="text-center w-100 py-5">
-                <p class="text-muted">No products found in the collection.</p>
+                <p class="text-muted">Chưa có sản phẩm nào.</p>
             </div>
         }
     </div>

@@ -1,0 +1,29 @@
+﻿@model webbaniphone.Models.Product
+@{
+    ViewData["Title"] = "Confirm Removal";
+}
+
+<div style="max-width: 500px; margin: 100px auto; text-align: center; border: 4px solid #000; padding: 50px; background:#fff;">
+    <h1 style="font-weight: 900; text-transform: uppercase;">Remove?</h1>
+    <p style="color: #666; margin-bottom: 30px;">
+        Bạn có chắc muốn xóa <b>@Model.Name</b> khỏi hệ thống?
+    </p>
+
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div style="background: #f9f9f9; padding: 20px; margin-bottom: 30px;">
+            <img src="@Model.ImageUrl" style="width: 100px; height: 100px; object-fit: contain;" />
+        </div>
+    }
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" style="background: #000; color: #fff; border: none; padding: 15px 40px; font-weight: 700; text-transform: uppercase; width: 100%; cursor: pointer;">
+            Delete Permanently
+        </button>
+    </form>
+
+    <a asp-action="Index" style="display: block; margin-top: 20px; color: #999; text-decoration: none; font-size: 0.8rem; text-transform: uppercase;">
+        Cancel Action
+    </a>
+</div>

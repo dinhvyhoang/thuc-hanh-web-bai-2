@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace webbaniphone.Areas.Admin.Views
+namespace webbaniphone.Areas.Admin.Views.Product
 {
-    public class DisplayModel : PageModel
+    public class UpdateModel : PageModel
     {
         public void OnGet()
         {

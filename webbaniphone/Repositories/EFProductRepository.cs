@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using webbaniphone.Models;
-using webbaniphone.Data; // Đảm bảo có namespace này
+using webbaniphone.Data;
 
 namespace webbaniphone.Repositories
 {
@@ -15,12 +15,16 @@ namespace webbaniphone.Repositories
 
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Products
+                .Include(p => p.Category)
+                .ToListAsync();
         }
 
         public async Task<Product> GetByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products
+                .Include(p => p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task AddAsync(Product product)
@@ -31,8 +35,19 @@ namespace webbaniphone.Repositories
 
         public async Task UpdateAsync(Product product)
         {
-            _context.Products.Update(product);
-            await _context.SaveChangesAsync();
+            var existingProduct = await _context.Products.FindAsync(product.Id);
+
+            if (existingProduct != null)
+            {
+                existingProduct.Name = product.Name;
+                existingProduct.Price = product.Price;
+                existingProduct.Description = product.Description;
+                existingProduct.ImageUrl = product.ImageUrl;
+                existingProduct.ImageUrls = product.ImageUrls;
+                existingProduct.CategoryId = product.CategoryId;
+
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(int id)

@@ -8,17 +8,17 @@
     .product-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
     .viewer-box { background: #fdfdfd; border: 1px solid #eee; padding: 40px; text-align: center; }
     .viewer-box img { max-width: 100%; height: auto; mix-blend-mode: multiply; }
-    
+
     .info-panel { padding-top: 20px; }
     .info-panel h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; margin-bottom: 5px; }
     .category-label { font-size: 0.8rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 2px; }
     .price-large { font-size: 1.8rem; margin: 25px 0; font-weight: 300; }
     .desc-text { line-height: 1.8; color: #555; border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 40px; }
-    
+
     .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
-    .gallery-item { border: 1px solid #eee; padding: 10px; cursor: pointer; transition: 0.3s; }
+    .gallery-item { border: 1px solid #eee; padding: 10px; transition: 0.3s; }
     .gallery-item:hover { border-color: #000; }
-    
+
     .action-bar { display: flex; gap: 15px; }
     .btn-black { background: #000; color: #fff; padding: 15px 40px; text-transform: uppercase; font-weight: 700; text-decoration: none; flex: 1; text-align: center; }
     .btn-outline { border: 1px solid #000; color: #000; padding: 15px 40px; text-transform: uppercase; font-weight: 700; text-decoration: none; flex: 1; text-align: center; }
@@ -28,24 +28,36 @@
     <div class="product-stage">
         <div>
             <div class="viewer-box">
-                <img src="@Model.ImageUrl" alt="@Model.Name" />
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" />
+                }
+                else
+                {
+                    <p>Không có ảnh</p>
+                }
             </div>
-            @if (Model.ImageUrls != null && Model.ImageUrls.Any()) {
+
+            @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+            {
                 <div class="gallery-grid">
-                    @foreach (var img in Model.ImageUrls) {
-                        <div class="gallery-item"><img src="@img" style="width:100%" /></div>
+                    @foreach (var img in Model.ImageUrls)
+                    {
+                        <div class="gallery-item">
+                            <img src="@img" style="width:100%" />
+                        </div>
                     }
                 </div>
             }
         </div>
-        
+
         <div class="info-panel">
             <span class="category-label">Apple Mobile / @(Model.Category?.Name ?? "General")</span>
             <h1>@Model.Name</h1>
             <div class="price-large">@Model.Price.ToString("N0") VNĐ</div>
-            
+
             <p class="desc-text">@Model.Description</p>
-            
+
             <div class="action-bar">
                 <a asp-action="Update" asp-route-id="@Model.Id" class="btn-black">Edit Item</a>
                 <a asp-action="Index" class="btn-outline">Back to Store</a>

@@ -8,7 +8,7 @@ namespace webbaniphone.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Tên sản phẩm là bắt buộc")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Range(1, double.MaxValue, ErrorMessage = "Giá phải lớn hơn 0")]
         public decimal Price { get; set; }
@@ -17,16 +17,11 @@ namespace webbaniphone.Models
 
         public string? ImageUrl { get; set; }
 
-        public List<string> ImageUrls { get; set; }
+        public List<string> ImageUrls { get; set; } = new List<string>();
 
         [Required(ErrorMessage = "Vui lòng chọn danh mục")]
         public int? CategoryId { get; set; }
 
         public Category? Category { get; set; }
-
-        public Product()
-        {
-            ImageUrls = new List<string>();
-        }
     }
 }
