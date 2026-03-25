@@ -1,63 +1,188 @@
 ﻿@model IEnumerable<webbaniphone.Models.Product>
+@{
+    ViewData["Title"] = "Trang chủ";
+    var sliderProducts = Model.Take(3).ToList();
+}
 
-<div class="container mt-4">
-    <div id="appleBanner" class="carousel slide shadow-sm mb-5" data-bs-ride="carousel"
-         style="border-radius: 20px; overflow: hidden; background-color: #ffffff; border: 1px solid #eee;">
-        
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="3000">
-                <div style="height: 400px; display: flex; align-items: center; justify-content: center;">
-                    <img src="/images/iphone-air-trang.jpg" class="d-block" alt="iPhone Air"
-                         style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                </div>
-                <div class="carousel-caption d-none d-md-block text-dark" style="background: rgba(255,255,255,0.5); border-radius: 10px;">
-                    <h2 class="fw-bold">iPhone Air</h2>
-                    <p>Mỏng nhẹ, đẳng cấp.</p>
-                </div>
-            </div>
+<style>
+    .slider-khung {
+        background: #fff;
+        border-radius: 26px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        margin-bottom: 40px;
+    }
 
-            <div class="carousel-item" data-bs-interval="3000">
-                <div style="height: 400px; display: flex; align-items: center; justify-content: center;">
-                    <img src="/images/iphone-16-plus-xanhmongket.jpg" class="d-block" alt="iPhone 16 Plus"
-                         style="max-height: 100%; max-width: 100%; object-fit: contain;">
-                </div>
-                <div class="carousel-caption d-none d-md-block text-dark" style="background: rgba(255,255,255,0.5); border-radius: 10px;">
-                    <h2 class="fw-bold">iPhone 16 Plus</h2>
-                    <p>Sắc màu rực rỡ.</p>
-                </div>
-            </div>
-        </div>
-        
-        <button class="carousel-control-prev" type="button" data-bs-target="#appleBanner" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" style="filter: invert(1);"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#appleBanner" data-bs-slide="next">
-            <span class="carousel-control-next-icon" style="filter: invert(1);"></span>
-        </button>
+    .slider-anh {
+        height: 420px;
+        object-fit: contain;
+    }
 
-    </div>
-    <div class="text-center mb-5">
-        <h2 style="font-weight: 800; text-transform: uppercase;">Sản Phẩm Mới Nhất</h2>
-        <div class="mx-auto" style="width: 50px; height: 3px; background: #000; margin-top: 10px;"></div>
-    </div>
+    .slider-caption-box {
+        background: rgba(255,255,255,0.75);
+        border-radius: 18px;
+        padding: 12px 18px;
+        display: inline-block;
+    }
 
-    <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
-                <div class="col">
-                    <div class="card h-100 border-0 shadow-sm text-center p-3" style="border-radius: 15px; transition: 0.3s;">
-                        <div style="height: 180px; display: flex; align-items: center; justify-content: center;">
-                            <img src="@item.ImageUrl" class="img-fluid" style="max-height: 160px; width: auto;" alt="@item.Name">
+        .slider-caption-box h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #111;
+        }
+
+        .slider-caption-box p {
+            font-size: 1.2rem;
+            color: #333;
+            margin: 0;
+        }
+
+    .tieu-de-lon {
+        font-size: 2.8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .the-san-pham {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .the-san-pham:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 28px rgba(0,0,0,0.08);
+        }
+
+    .anh-san-pham {
+        height: 320px;
+        object-fit: contain;
+        background: #fafafa;
+        padding: 20px;
+    }
+
+    .ten-san-pham {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #111;
+        text-decoration: none;
+    }
+
+    .gia-san-pham {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #111;
+    }
+
+    .nhan-loai {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+</style>
+
+@if (sliderProducts.Any())
+{
+    <div class="slider-khung">
+        <div id="homeSlider" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < sliderProducts.Count; i++)
+                {
+                    var item = sliderProducts[i];
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <div class="text-center position-relative">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" class="d-block w-100 slider-anh" alt="@item.Name" />
+                            }
+                            else
+                            {
+                                <div class="slider-anh d-flex justify-content-center align-items-center text-muted">
+                                    Không có ảnh
+                                </div>
+                            }
+
+                            <div class="carousel-caption d-none d-md-block">
+                                <div class="slider-caption-box">
+                                    <h2>@item.Name</h2>
+                                    <p>@(string.IsNullOrEmpty(item.Description) ? "Sản phẩm nổi bật" : item.Description)</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <h6 class="fw-bold">@item.Name</h6>
-                            <p class="text-danger fw-bold">@item.Price.ToString("N0") VNĐ</p>
-                            <button class="btn btn-dark btn-sm rounded-pill px-4">Mua ngay</button>
+                    </div>
+                }
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#homeSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homeSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+            </button>
+        </div>
+    </div>
+}
+
+<section class="bg-white rounded-4 p-4 shadow-sm">
+    <h2 class="tieu-de-lon">Sản phẩm mới nhất</h2>
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card the-san-pham">
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src="@item.ImageUrl" class="card-img-top anh-san-pham" alt="@item.Name" />
+                    }
+                    else
+                    {
+                        <div class="anh-san-pham d-flex justify-content-center align-items-center text-muted">
+                            Không có ảnh
+                        </div>
+                    }
+
+                    <div class="card-body text-center">
+                        <span class="nhan-loai">@(item.Category?.Name ?? "Chưa phân loại")</span>
+                        <h5>
+                            <a asp-controller="Product" asp-action="Display" asp-route-id="@item.Id" class="ten-san-pham">
+                                @item.Name
+                            </a>
+                        </h5>
+                        <p class="gia-san-pham">@item.Price.ToString("N0") VNĐ</p>
+
+                        <div class="d-grid gap-2">
+                            <a asp-controller="Product" asp-action="Display" asp-route-id="@item.Id" class="btn btn-outline-dark btn-viet">
+                                Xem chi tiết
+                            </a>
+
+                            <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="productId" value="@item.Id" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" class="btn btn-dark btn-viet">
+                                    <i class="bi bi-cart-fill me-1"></i> Thêm vào giỏ
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         }
     </div>
+</section>

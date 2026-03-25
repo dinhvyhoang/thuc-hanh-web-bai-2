@@ -1,0 +1,45 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+
+<style>
+    .khung-thanh-cong {
+        max-width: 700px;
+        margin: 50px auto;
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .icon-thanh-cong {
+        font-size: 4rem;
+        color: #16a34a;
+    }
+
+    .tieu-de-thanh-cong {
+        font-size: 2.3rem;
+        font-weight: 900;
+        margin-top: 10px;
+        text-transform: uppercase;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="khung-thanh-cong">
+    <div class="icon-thanh-cong">
+        <i class="bi bi-check-circle-fill"></i>
+    </div>
+    <h2 class="tieu-de-thanh-cong">Đặt hàng thành công</h2>
+    <p class="lead">Đơn hàng của bạn với mã <strong>#@Model</strong> đã được đặt thành công.</p>
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-dark btn-lg btn-viet mt-3">
+        Quay về trang chủ
+    </a>
+</div>

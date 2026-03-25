@@ -1,0 +1,61 @@
+﻿@model webbaniphone.Models.Category
+@{
+    ViewData["Title"] = "Cập nhật loại sản phẩm";
+}
+
+<style>
+    .khung-form-admin {
+        max-width: 700px;
+        margin: 30px auto;
+        background: #fff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .tieu-de-form-admin {
+        font-size: 2rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: 700;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        min-height: 48px;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="khung-form-admin">
+    <h2 class="tieu-de-form-admin">Cập nhật loại sản phẩm</h2>
+
+    <form asp-action="Update" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên loại</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-dark btn-viet">Cập nhật</button>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-viet">Quay lại</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

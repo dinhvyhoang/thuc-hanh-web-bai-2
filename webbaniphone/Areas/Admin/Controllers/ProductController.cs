@@ -37,7 +37,7 @@ namespace webbaniphone.Areas.Admin.Controllers
         {
             if (product.CategoryId == null || product.CategoryId == 0)
             {
-                ModelState.AddModelError("CategoryId", "Vui lòng chọn danh mục hợp lệ.");
+                ModelState.AddModelError("CategoryId", "Vui lòng chọn loại hợp lệ.");
             }
 
             if (!ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace webbaniphone.Areas.Admin.Controllers
 
             if (product.CategoryId == null || product.CategoryId == 0)
             {
-                ModelState.AddModelError("CategoryId", "Vui lòng chọn danh mục hợp lệ.");
+                ModelState.AddModelError("CategoryId", "Vui lòng chọn loại hợp lệ.");
             }
 
             if (!ModelState.IsValid)

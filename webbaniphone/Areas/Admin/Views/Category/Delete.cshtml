@@ -1,6 +1,6 @@
-﻿@model webbaniphone.Models.Product
+﻿@model webbaniphone.Models.Category
 @{
-    ViewData["Title"] = "Xóa sản phẩm";
+    ViewData["Title"] = "Xóa loại sản phẩm";
 }
 
 <style>
@@ -21,16 +21,6 @@
         margin-bottom: 20px;
     }
 
-    .anh-xoa {
-        width: 120px;
-        height: 120px;
-        object-fit: contain;
-        background: #fafafa;
-        border-radius: 16px;
-        padding: 10px;
-        margin-bottom: 20px;
-    }
-
     .btn-viet {
         border-radius: 12px;
         font-weight: 700;
@@ -38,14 +28,9 @@
 </style>
 
 <div class="khung-xoa">
-    <h2 class="tieu-de-xoa">Xóa sản phẩm</h2>
+    <h2 class="tieu-de-xoa">Xóa loại sản phẩm</h2>
 
-    @if (!string.IsNullOrEmpty(Model.ImageUrl))
-    {
-        <img src="@Model.ImageUrl" class="anh-xoa" />
-    }
-
-    <p>Bạn có chắc muốn xóa sản phẩm <strong>@Model.Name</strong> không?</p>
+    <p>Bạn có chắc muốn xóa loại <strong>@Model.Name</strong> không?</p>
 
     <form asp-action="Delete" method="post">
         @Html.AntiForgeryToken()

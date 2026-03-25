@@ -7,211 +7,132 @@
 }
 
 <style>
-    .update-wrapper {
-        max-width: 900px;
-        margin: 50px auto;
-        padding: 40px;
-        border: 1px solid #000;
+    .khung-form-admin {
+        max-width: 800px;
+        margin: 30px auto;
         background: #fff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
 
-    .update-header {
-        text-align: center;
-        margin-bottom: 40px;
-        border-bottom: 2px solid #000;
-        padding-bottom: 15px;
-    }
-
-        .update-header h2 {
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-    .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-    }
-
-    .full-width {
-        grid-column: span 2;
-    }
-
-    .field-group {
-        margin-bottom: 20px;
-    }
-
-    .field-label {
-        font-size: 0.75rem;
-        font-weight: 700;
+    .tieu-de-form-admin {
+        font-size: 2.2rem;
+        font-weight: 900;
         text-transform: uppercase;
-        margin-bottom: 8px;
-        display: block;
-        color: #000;
+        margin-bottom: 25px;
     }
 
-    .input-control {
-        width: 100%;
-        border: 1px solid #ccc;
-        padding: 12px;
-        outline: none;
-        transition: 0.3s;
-        border-radius: 10px;
+    .form-label {
+        font-weight: 700;
     }
 
-        .input-control:focus {
-            border-color: #000;
-        }
-
-    .current-media {
-        display: flex;
-        gap: 15px;
-        margin-top: 10px;
-        background: #f9f9f9;
-        padding: 10px;
-        border: 1px solid #eee;
-        align-items: center;
-        flex-wrap: wrap;
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        min-height: 48px;
     }
 
-    .preview-thumb {
-        width: 80px;
-        height: 80px;
+    textarea.form-control {
+        min-height: 140px;
+    }
+
+    .anh-hien-tai {
+        width: 100px;
+        height: 100px;
         object-fit: contain;
-        background: #fff;
+        background: #fafafa;
+        border-radius: 12px;
+        padding: 8px;
         border: 1px solid #ddd;
     }
 
-    .upload-box {
-        border: 1px dashed #000;
-        padding: 15px;
-        text-align: center;
-        margin-top: 5px;
-        border-radius: 10px;
-    }
-
-    .btn-save {
-        background: #000;
-        color: #fff;
-        width: 100%;
-        padding: 18px;
-        border: none;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-top: 30px;
-        cursor: pointer;
-        transition: 0.3s;
+    .btn-viet {
         border-radius: 12px;
+        font-weight: 700;
     }
-
-        .btn-save:hover {
-            background: #333;
-        }
-
-    .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        color: #999;
-        text-decoration: none;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-    }
-
-        .back-link:hover {
-            color: #000;
-            text-decoration: underline;
-        }
 </style>
 
-<div class="update-wrapper">
-    <div class="update-header">
-        <h2>Cập nhật sản phẩm</h2>
-    </div>
+<div class="khung-form-admin">
+    <h2 class="tieu-de-form-admin">Cập nhật sản phẩm</h2>
 
     <form asp-action="Update" method="post" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
-        <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-        <div class="form-grid">
-            <div class="field-group">
-                <label class="field-label" asp-for="Name">Tên sản phẩm</label>
-                <input asp-for="Name" class="input-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="field-group">
-                <label class="field-label" asp-for="Price">Giá (VNĐ)</label>
-                <input asp-for="Price" class="input-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="field-group full-width">
-                <label class="field-label" asp-for="CategoryId">Danh mục</label>
-                <select asp-for="CategoryId" class="input-control">
-                    <option value="">-- Chọn danh mục --</option>
-                    @if (categoryList != null)
-                    {
-                        foreach (var item in categoryList)
-                        {
-                            if (Model.CategoryId == item.Id)
-                            {
-                                <option value="@item.Id" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        }
-                    }
-                </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-
-            <div class="field-group full-width">
-                <label class="field-label" asp-for="Description">Mô tả</label>
-                <textarea asp-for="Description" class="input-control" rows="4"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="field-group">
-                <label class="field-label">Ảnh chính</label>
-                <div class="upload-box">
-                    <input type="file" name="imageUrl" accept="image/*" />
-                </div>
-
-                @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                {
-                    <div class="current-media">
-                        <img src="@Model.ImageUrl" class="preview-thumb" />
-                        <span style="font-size: 0.7rem; color: #888;">Ảnh hiện tại</span>
-                    </div>
-                }
-            </div>
-
-            <div class="field-group">
-                <label class="field-label">Ảnh phụ</label>
-                <div class="upload-box">
-                    <input type="file" name="images" multiple accept="image/*" />
-                </div>
-
-                @if (Model.ImageUrls != null && Model.ImageUrls.Any())
-                {
-                    <div class="current-media" style="overflow-x: auto;">
-                        @foreach (var img in Model.ImageUrls)
-                        {
-                            <img src="@img" class="preview-thumb" />
-                        }
-                    </div>
-                }
-            </div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn-save">Cập nhật</button>
-        <a asp-action="Index" class="back-link">Quay lại danh sách</a>
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label">Giá</label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label">Loại sản phẩm</label>
+            <select asp-for="CategoryId" class="form-select">
+                <option value="">-- Chọn loại --</option>
+                @if (categoryList != null)
+                {
+                    foreach (var item in categoryList)
+                    {
+                        if (Model.CategoryId == item.Id)
+                        {
+                            <option value="@item.Id" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ảnh chính mới</label>
+            <input type="file" name="imageUrl" class="form-control" />
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mt-2">
+                    <img src="@Model.ImageUrl" class="anh-hien-tai" />
+                </div>
+            }
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ảnh phụ mới</label>
+            <input type="file" name="images" multiple class="form-control" />
+        </div>
+
+        @if (Model.ImageUrls != null && Model.ImageUrls.Any())
+        {
+            <div class="mb-3">
+                <label class="form-label">Ảnh phụ hiện tại</label>
+                <div class="d-flex gap-2 flex-wrap">
+                    @foreach (var img in Model.ImageUrls)
+                    {
+                        <img src="@img" class="anh-hien-tai" />
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="d-flex gap-2 mt-4">
+            <button type="submit" class="btn btn-dark btn-viet">Cập nhật</button>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-viet">Quay lại</a>
+        </div>
     </form>
 </div>
 

@@ -4,62 +4,112 @@
 }
 
 <style>
-    .details-wrapper { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
-    .product-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
-    .viewer-box { background: #fdfdfd; border: 1px solid #eee; padding: 40px; text-align: center; }
-    .viewer-box img { max-width: 100%; height: auto; mix-blend-mode: multiply; }
+    .khung-chi-tiet {
+        max-width: 1100px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
 
-    .info-panel { padding-top: 20px; }
-    .info-panel h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; text-transform: uppercase; margin-bottom: 5px; }
-    .category-label { font-size: 0.8rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 2px; }
-    .price-large { font-size: 1.8rem; margin: 25px 0; font-weight: 300; }
-    .desc-text { line-height: 1.8; color: #555; border-top: 1px solid #eee; padding-top: 20px; margin-bottom: 40px; }
+    .anh-chinh {
+        width: 100%;
+        border-radius: 18px;
+        background: #fafafa;
+        padding: 20px;
+        object-fit: contain;
+        height: 450px;
+    }
 
-    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
-    .gallery-item { border: 1px solid #eee; padding: 10px; transition: 0.3s; }
-    .gallery-item:hover { border-color: #000; }
+    .anh-phu {
+        width: 100%;
+        height: 110px;
+        object-fit: contain;
+        background: #fafafa;
+        border-radius: 12px;
+        padding: 8px;
+    }
 
-    .action-bar { display: flex; gap: 15px; }
-    .btn-black { background: #000; color: #fff; padding: 15px 40px; text-transform: uppercase; font-weight: 700; text-decoration: none; flex: 1; text-align: center; }
-    .btn-outline { border: 1px solid #000; color: #000; padding: 15px 40px; text-transform: uppercase; font-weight: 700; text-decoration: none; flex: 1; text-align: center; }
+    .ten-lon {
+        font-size: 2.8rem;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .gia-lon {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 20px 0;
+    }
+
+    .nhan-loai {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .mo-ta {
+        margin-top: 20px;
+        line-height: 1.8;
+        color: #555;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
 </style>
 
-<div class="details-wrapper">
-    <div class="product-stage">
-        <div>
-            <div class="viewer-box">
-                @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                {
-                    <img src="@Model.ImageUrl" alt="@Model.Name" />
-                }
-                else
-                {
-                    <p>Không có ảnh</p>
-                }
-            </div>
+<div class="khung-chi-tiet">
+    <div class="row g-4">
+        <div class="col-lg-6">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="anh-chinh" alt="@Model.Name" />
+            }
+            else
+            {
+                <div class="anh-chinh d-flex justify-content-center align-items-center text-muted">
+                    Không có ảnh
+                </div>
+            }
 
             @if (Model.ImageUrls != null && Model.ImageUrls.Any())
             {
-                <div class="gallery-grid">
+                <div class="row mt-3 g-2">
                     @foreach (var img in Model.ImageUrls)
                     {
-                        <div class="gallery-item">
-                            <img src="@img" style="width:100%" />
+                        <div class="col-3">
+                            <img src="@img" class="anh-phu" />
                         </div>
                     }
                 </div>
             }
         </div>
 
-        <div class="info-panel">
-            <span class="category-label">Apple Mobile / @(Model.Category?.Name ?? "General")</span>
-            <h1>@Model.Name</h1>
-            <div class="price-large">@Model.Price.ToString("N0") VNĐ</div>
+        <div class="col-lg-6">
+            <div class="nhan-loai">Danh mục: @(Model.Category?.Name ?? "Chưa phân loại")</div>
+            <h1 class="ten-lon">@Model.Name</h1>
+            <div class="gia-lon">@Model.Price.ToString("N0") VNĐ</div>
 
-            <p class="desc-text">@Model.Description</p>
+            <div class="mo-ta">
+                @Model.Description
+            </div>
 
-            <div class="action-bar">
-                <a asp-action="Index" class="btn-black">Quay lại sản phẩm</a>
+            <div class="d-grid gap-2 mt-4">
+                <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="btn btn-dark btn-lg btn-viet">
+                        <i class="bi bi-cart-fill me-1"></i> Thêm vào giỏ
+                    </button>
+                </form>
+
+                <a asp-action="Index" class="btn btn-outline-dark btn-lg btn-viet">Quay lại</a>
             </div>
         </div>
     </div>

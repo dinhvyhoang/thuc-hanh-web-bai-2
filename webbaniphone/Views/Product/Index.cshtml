@@ -4,68 +4,105 @@
 }
 
 <style>
-    .store-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-    .store-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; border-bottom: 1px solid #000; padding-bottom: 20px; }
-    .store-header h2 { font-weight: 900; text-transform: uppercase; letter-spacing: -1px; margin: 0; }
+    .tieu-de-trang {
+        font-size: 2.6rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+    }
 
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-    .product-card { border: 1px solid #f0f0f0; background: #fff; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; display: flex; flex-direction: column; }
-    .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); border-color: #000; }
+    .the-san-pham {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
 
-    .image-wrapper { position: relative; padding-top: 100%; background: #f9f9f9; }
-    .image-wrapper img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; padding: 20px; }
+        .the-san-pham:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 26px rgba(0,0,0,0.08);
+        }
 
-    .product-info { padding: 20px; text-align: center; flex-grow: 1; }
-    .category-badge { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: #999; letter-spacing: 1px; margin-bottom: 5px; display: block; }
-    .product-name { font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 10px; display: block; text-decoration: none; }
-    .product-price { font-size: 1.2rem; font-weight: 400; color: #333; }
+    .anh-san-pham {
+        height: 320px;
+        object-fit: contain;
+        background: #fafafa;
+        padding: 20px;
+    }
 
-    .card-actions { display: flex; border-top: 1px solid #f0f0f0; }
-    .card-actions a { flex: 1; padding: 12px 0; text-align: center; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; text-decoration: none; color: #000; transition: 0.3s; }
-    .card-actions a:hover { background: #000; color: #fff; }
+    .ten-san-pham {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #111;
+        text-decoration: none;
+    }
 
-    .no-image { display: flex; align-items: center; justify-content: center; height: 100%; color: #ccc; font-style: italic; font-size: 0.8rem; }
+    .gia-san-pham {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #111;
+    }
+
+    .nhan-loai {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
 </style>
 
-<div class="store-container">
-    <div class="store-header">
-        <h2>Sản phẩm</h2>
-    </div>
+<h2 class="tieu-de-trang">Sản phẩm</h2>
 
-    <div class="product-grid">
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var product in Model)
-            {
-                <div class="product-card">
-                    <div class="image-wrapper">
-                        @if (!string.IsNullOrEmpty(product.ImageUrl))
-                        {
-                            <img src="@product.ImageUrl" alt="@product.Name" />
-                        }
-                        else
-                        {
-                            <div class="no-image">No Image Available</div>
-                        }
+<div class="row g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-6">
+            <div class="card the-san-pham">
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    <img src="@item.ImageUrl" class="card-img-top anh-san-pham" alt="@item.Name" />
+                }
+                else
+                {
+                    <div class="anh-san-pham d-flex justify-content-center align-items-center text-muted">
+                        Không có ảnh
                     </div>
+                }
 
-                    <div class="product-info">
-                        <span class="category-badge">@(product.Category?.Name ?? "General")</span>
-                        <a asp-action="Display" asp-route-id="@product.Id" class="product-name">@product.Name</a>
-                        <div class="product-price">@product.Price.ToString("N0") <small>VNĐ</small></div>
-                    </div>
+                <div class="card-body text-center">
+                    <span class="nhan-loai">@(item.Category?.Name ?? "Chưa phân loại")</span>
+                    <h5>
+                        <a asp-action="Display" asp-route-id="@item.Id" class="ten-san-pham">@item.Name</a>
+                    </h5>
+                    <p class="gia-san-pham">@item.Price.ToString("N0") VNĐ</p>
 
-                    <div class="card-actions">
-                        <a asp-action="Display" asp-route-id="@product.Id">Xem chi tiết</a>
+                    <div class="d-grid gap-2">
+                        <a asp-action="Display" asp-route-id="@item.Id" class="btn btn-outline-dark btn-viet">
+                            Xem chi tiết
+                        </a>
+
+                        <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@item.Id" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-dark btn-viet">
+                                <i class="bi bi-cart-fill me-1"></i> Thêm vào giỏ
+                            </button>
+                        </form>
                     </div>
                 </div>
-            }
-        }
-        else
-        {
-            <div class="text-center w-100 py-5">
-                <p class="text-muted">Chưa có sản phẩm nào.</p>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>

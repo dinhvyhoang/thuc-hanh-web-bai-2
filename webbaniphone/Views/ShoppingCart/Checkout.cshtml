@@ -1,0 +1,60 @@
+﻿@model webbaniphone.Models.Order
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<style>
+    .khung-thanh-toan {
+        max-width: 760px;
+        margin: 30px auto;
+        background: #fff;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .tieu-de-thanh-toan {
+        font-size: 2.4rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        font-weight: 700;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        min-height: 48px;
+    }
+
+    textarea.form-control {
+        min-height: 120px;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="khung-thanh-toan">
+    <h2 class="tieu-de-thanh-toan">Thanh toán</h2>
+
+    <form asp-action="Checkout" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <label asp-for="ShippingAddress" class="form-label">Địa chỉ giao hàng</label>
+            <input asp-for="ShippingAddress" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Notes" class="form-label">Ghi chú</label>
+            <textarea asp-for="Notes" class="form-control"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-viet">Đặt hàng</button>
+    </form>
+</div>

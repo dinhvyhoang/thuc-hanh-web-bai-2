@@ -1,0 +1,139 @@
+﻿@model webbaniphone.Models.ShoppingCart
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<style>
+    .khung-gio-hang {
+        background: #fff;
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .tieu-de-gio-hang {
+        font-size: 2.4rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .anh-gio-hang {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        background: #fafafa;
+        border-radius: 12px;
+        padding: 8px;
+        border: 1px solid #eee;
+    }
+
+    .tong-tien {
+        font-size: 1.7rem;
+        font-weight: 900;
+        color: #111;
+    }
+
+    .btn-viet {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+
+    .so-luong-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 14px;
+        padding: 6px 10px;
+    }
+
+    .btn-so-luong {
+        width: 34px;
+        height: 34px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        font-weight: 900;
+        background: #111;
+        color: #fff;
+        line-height: 1;
+    }
+
+        .btn-so-luong:hover {
+            background: #333;
+        }
+
+    .so-luong-text {
+        min-width: 28px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 1rem;
+    }
+
+    .btn-xoa {
+        border-radius: 12px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="khung-gio-hang">
+    <h2 class="tieu-de-gio-hang">Giỏ hàng của bạn</h2>
+
+    @if (Model.Items == null || !Model.Items.Any())
+    {
+        <div class="alert alert-info">Giỏ hàng của bạn đang trống.</div>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-dark btn-viet">Tiếp tục mua hàng</a>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
+                        <th>Thành tiền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" class="anh-gio-hang" />
+                                }
+                            </td>
+                            <td>@item.Name</td>
+                            <td>
+                                <div class="so-luong-box">
+                                    <a asp-action="DecreaseQuantity" asp-route-productId="@item.ProductId" class="btn-so-luong text-decoration-none d-flex justify-content-center align-items-center">-</a>
+                                    <span class="so-luong-text">@item.Quantity</span>
+                                    <a asp-action="IncreaseQuantity" asp-route-productId="@item.ProductId" class="btn-so-luong text-decoration-none d-flex justify-content-center align-items-center">+</a>
+                                </div>
+                            </td>
+                            <td>@item.Price.ToString("N0") VNĐ</td>
+                            <td>@((item.Price * item.Quantity).ToString("N0")) VNĐ</td>
+                            <td>
+                                <a asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" class="btn btn-outline-danger btn-sm btn-xoa">
+                                    Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div class="tong-tien">Tổng cộng: @Model.GetTotal().ToString("N0") VNĐ</div>
+            <a asp-action="Checkout" class="btn btn-success btn-lg btn-viet">Tới trang thanh toán</a>
+        </div>
+    }
+</div>
